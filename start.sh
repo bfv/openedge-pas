@@ -1,6 +1,8 @@
 #!/bin/bash
 
 function startServer() {
+    if [[ -f "${PASWEBHANDLERS}" ]]; then
+        cp ${PASWEBHANDLERS} /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
     /app/pas/as/bin/tcman.sh start -v
     echo "start.sh: PAS instance started..."
     ps -ef
