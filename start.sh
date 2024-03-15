@@ -3,6 +3,11 @@
 function startServer() {
     if [[ -f "${PASWEBHANDLERS}" ]]; then
         cp ${PASWEBHANDLERS} /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
+        cat /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers
+    else
+        echo "start.sh: $PASWEBHANDLERS not found, using default"
+        ls -l /app/src/webhandlers/
+    fi
     /app/pas/as/bin/tcman.sh start -v
     echo "start.sh: PAS instance started..."
     ps -ef

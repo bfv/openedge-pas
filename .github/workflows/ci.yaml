@@ -14,12 +14,12 @@ jobs:
     
     strategy:
       matrix:
-        version: [ 12.6.0 ]
+        version: [ 12.8.1 ]
     
     steps:
 
       - name: Checkout repository
-        uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8         # v3.1.0
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
         with:
           path: src
 
@@ -49,3 +49,16 @@ jobs:
           echo "${{ secrets[format('RESPONSE_INI_{0}', env.FLATVERSION)] }}" > src/response.ini
           echo "${{ secrets[format('PROGRESS_CFG_{0}', env.FLATVERSION)] }}" | base64 --decode > src/progress.cfg
           ls -l src
+
+      - name: Build docker image
+        run: |
+          cd src
+          docker build -f Dockerfile -t openedge-db:${{env.OPENEDGE_VERSION}} .
+
+      - name: Remove installer files
+        run: |
+          cd src
+          rm -f PROGRESS_*
+          rm response.ini
+          ls -l 
+

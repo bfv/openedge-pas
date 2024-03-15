@@ -1,7 +1,7 @@
-FROM ubuntu:20.04 as install
+FROM ubuntu:22.04 as install
 
 ENV JAVA_HOME=/opt/java/openjdk
-COPY --from=eclipse-temurin:17.0.9_9-jdk $JAVA_HOME $JAVA_HOME
+COPY --from=eclipse-temurin:JDKVERSION $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ADD PROGRESS_OE.tar.gz /install/openedge
@@ -10,11 +10,17 @@ COPY response.ini /install/openedge/response.ini
 ENV TERM xterm
 
 RUN /install/openedge/proinst -b /install/openedge/response.ini -l /install/install_oe.log -n && \
-    rm /usr/dlc/progress.cfg
+    cat /install/install_oe.log
+
+COPY clean-dlc.sh /install/openedge/
+RUN chmod +x /install/openedge/clean-dlc.sh
+RUN /install/openedge/clean-dlc.sh
+
+RUN rm /usr/dlc/progress.cfg
 
 ########## end install ##########
 
-FROM ubuntu:20.04 as instance
+FROM ubuntu:22.04 as instance
 
 LABEL maintainer="Bronco Oostermeyer <dev@bfv.io>"
 
@@ -42,7 +48,10 @@ RUN chmod 644 /etc/protocols && \
 RUN mkdir -p /app/pas && \
     mkdir /app/src && \
     mkdir /app/lib
+
+# if not present ESAM starts complaining
 RUN touch /usr/dlc/progress.cfg
+
 WORKDIR /app/pas
 RUN pasman create -p 8810 -P 8811 -j 8812 -s 8812 -Z dev -f -N pas ./as
 
