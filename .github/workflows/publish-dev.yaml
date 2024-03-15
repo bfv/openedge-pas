@@ -1,4 +1,4 @@
-name: Publish image
+name: Publish dev image
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ on:
         default: "latest"
         required: true
               
-run-name: publish openedge-db ${{ inputs.openedgeversion }} to docker.io/devbfvio:${{ github.event.inputs.imagetag }}
+run-name: publish DEV openedge-pas ${{ inputs.openedgeversion }} to docker.io/devbfvio:${{ github.event.inputs.imagetag }}-dev
 
 jobs:
   publish:
