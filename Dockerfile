@@ -43,6 +43,19 @@ COPY services /etc/
 RUN chmod 644 /etc/protocols && \
     chmod 644 /etc/services
 
+WORKDIR /usr/dlc/bin
+
+RUN chown root _* && \
+    chmod 4755 _* && \
+    chmod 755 _sql* && \
+    chmod -f 755 _waitfor || true
+
+ENV TERM xterm
+ENV PATH=$DLC:$DLC/bin:$PATH:${JAVA_HOME}/bin:${PATH}
+
+RUN groupadd -g 1000 openedge && \
+    useradd -r -u 1000 -g openedge openedge
+
 ##### create an instance #####
 
 RUN mkdir -p /app/pas && \
@@ -67,8 +80,11 @@ RUN mkdir -p /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
 
 COPY oeablSecurity.csv /app/pas/as/webapps/ROOT/WEB-INF/
     
+RUN chown -R openedge:openedge /app/
+
+USER openedge
+
 VOLUME /app/src
 VOLUME /app/lib
 
 COPY start.sh /app/pas/
-
