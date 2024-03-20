@@ -10,7 +10,7 @@ permissions:
 jobs:
   build:
     
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     strategy:
       matrix:
@@ -53,12 +53,40 @@ jobs:
       - name: Build docker image
         run: |
           cd src
-          docker build -f Dockerfile -t openedge-db:${{env.OPENEDGE_VERSION}} .
+          docker build -f Dockerfile -t openedge-pas:${{env.OPENEDGE_VERSION}} .
+      
+      - name: Setup test container
+        run: |
+          cd src
+          #ls -l 
+          docker run \
+            -d \
+            --name pas \
+            -v ./4gl:/app/src \
+            -v ./progress.cfg:/usr/dlc/progress.cfg \
+            -p 8810:8810 \
+            --env PASWEBHANDLERS=/app/src/ROOT.handlers \
+            openedge-pas:${{env.OPENEDGE_VERSION}} \
+            /app/pas/start.sh
+          echo starting PAS...
+      
+      # Wait for PAS to start
+      - name: Wait 10 seconds
+        uses: GuillaumeFalourd/wait-sleep-action@175a644657d8de245e4c6059d014941646186a84  # v1
+        with:
+          time: '10'
+
+      - name: Execute tests
+        run: |
+          curl http://localhost:8810/web/api > result.txt
+          cat result.txt 
+          grep -Fxq "OK" result.txt
 
       - name: Remove installer files
         run: |
           cd src
           rm -f PROGRESS_*
           rm response.ini
+          rm progress.cfg
           ls -l 
 

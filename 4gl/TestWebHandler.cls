@@ -21,7 +21,13 @@ class TestWebHandler inherits WebHandler:
     
   end method.  // HandleGet
 
-  method override protected integer HandleNotAllowedMethod(request as IWebRequest). end.
-  method override protected integer HandleNotImplemented(request as IWebRequest). end.
+  method override protected integer HandleNotAllowedMethod(request as OpenEdge.Web.IWebRequest). 
+    undo, throw new Progress.Lang.AppError("Method Not Allowed", -1).
+  end.
+
+  method override protected integer HandleNotImplemented(request as OpenEdge.Web.IWebRequest). 
+    undo, throw new Progress.Lang.AppError("Not Implemented", -1).
+  end.
 
 end class.  // TestWebHandler
+
