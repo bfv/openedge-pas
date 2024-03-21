@@ -79,12 +79,12 @@ RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH=".,/app/src,/app/lib/logic.pl,\${D
 RUN mkdir -p /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
 
 COPY oeablSecurity.csv /app/pas/as/webapps/ROOT/WEB-INF/
-    
+
+COPY start.sh /app/pas/
+RUN chmod +x /app/pas/start.sh
 RUN chown -R openedge:openedge /app/
 
 USER openedge
 
 VOLUME /app/src
 VOLUME /app/lib
-
-COPY start.sh /app/pas/
