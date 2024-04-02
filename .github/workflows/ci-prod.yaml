@@ -54,11 +54,15 @@ jobs:
         run: |
           cd src
           docker build -f DockerfileProd -t openedge-pas:${{env.OPENEDGE_VERSION}} .
+
+      - name: Build CI image
+        run: |
+          cd src
+          docker build -f DockerfileProdCI --build-arg="OE_VERSION=${{env.OPENEDGE_VERSION}}" -t openedge-pas-ci:${{env.OPENEDGE_VERSION}} . 
       
       - name: Setup test container
         run: |
           cd src
-          cp start-prod-ci.sh 4gl/ 
           docker run \
             -d \
             --name pas \
@@ -66,8 +70,7 @@ jobs:
             -v ./progress.cfg:/usr/dlc/progress.cfg \
             -p 8810:8810 \
             --env PASWEBHANDLERS=/app/src/ROOT.handlers \
-            openedge-pas:${{env.OPENEDGE_VERSION}} \
-            /app/src/start-prod-ci.sh
+            openedge-pas-ci:${{env.OPENEDGE_VERSION}} 
           echo starting PAS...
       
       # Wait for PAS to start
@@ -78,6 +81,7 @@ jobs:
 
       - name: Execute tests
         run: |
+          docker logs pas
           curl http://localhost:8810/web/api > result.txt
           cat result.txt 
           grep -Fxq "OK" result.txt
