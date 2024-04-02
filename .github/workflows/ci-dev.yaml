@@ -1,4 +1,4 @@
-name: CI 
+name: CI Dev
 
 on: 
   [ push, workflow_dispatch ]
@@ -31,13 +31,13 @@ jobs:
           echo "FLATVERSION=${flatversion}" >> $GITHUB_ENV
           echo "OPENEDGE_VERSION=${{matrix.version}}" >> $GITHUB_ENV
 
-      - name: Insert JDK version in Dockerfile
+      - name: Insert JDK version in Dockerfile (dev)
         run: |
           jdk=`jq -r ".jdk${FLATVERSION}" src/jdk-versions.json`
           echo JDK: $jdk
-          sed -i "s/JDKVERSION/$jdk/g" src/Dockerfile
-          echo download jdk from Dockerfile:
-          cat src/Dockerfile | grep temurin
+          sed -i "s/JDKVERSION/$jdk/g" src/DockerfileDev
+          echo download jdk from DockerfileDev:
+          cat src/DockerfileDev | grep temurin
   
       - name: Download installer files
         run: |
@@ -53,7 +53,7 @@ jobs:
       - name: Build docker image
         run: |
           cd src
-          docker build -f Dockerfile -t openedge-pas:${{env.OPENEDGE_VERSION}} .
+          docker build -f DockerfileDev -t openedge-pas:${{env.OPENEDGE_VERSION}} .
       
       - name: Setup test container
         run: |

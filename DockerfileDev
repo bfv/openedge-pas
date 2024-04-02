@@ -78,7 +78,7 @@ RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH=".,/app/src,/app/lib/logic.pl,\${D
 # a ROOT.handlers file van be placed in this directory to configure WebHandlers
 RUN mkdir -p /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
 
-COPY oeablSecurity.csv /app/pas/as/webapps/ROOT/WEB-INF/
+COPY oeablSecurity-dev.csv /app/pas/as/webapps/ROOT/WEB-INF/oeablSecurity.csv
 
 COPY start.sh /app/pas/
 RUN chmod +x /app/pas/start.sh
