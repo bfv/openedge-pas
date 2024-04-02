@@ -1,15 +1,7 @@
-name: CI Dev
+name: CI Prod
 
 on: 
-  push:
-    paths-ignore:
-      - 'README.md'
-      - '.github/workflows/ci-prod.yaml'
-      - '.github/workflows/publish-prod.yaml'
-      - 'oeablSecurity-prod.csv'
-      - 'DockerfileProd'
-      - 'start-prod-ci.sh'
-  workflow_dispatch:
+  [ push, workflow_dispatch ]
 
 permissions:
   contents: read
@@ -39,13 +31,13 @@ jobs:
           echo "FLATVERSION=${flatversion}" >> $GITHUB_ENV
           echo "OPENEDGE_VERSION=${{matrix.version}}" >> $GITHUB_ENV
 
-      - name: Insert JDK version in Dockerfile (dev)
+      - name: Insert JDK version in Dockerfile (prod)
         run: |
           jdk=`jq -r ".jdk${FLATVERSION}" src/jdk-versions.json`
           echo JDK: $jdk
-          sed -i "s/JDKVERSION/$jdk/g" src/DockerfileDev
-          echo download jdk from DockerfileDev:
-          cat src/DockerfileDev | grep temurin
+          sed -i "s/JDKVERSION/$jdk/g" src/DockerfileProd
+          echo download jdk from DockerfileProd:
+          cat src/DockerfileProd | grep temurin
   
       - name: Download installer files
         run: |
@@ -61,12 +53,12 @@ jobs:
       - name: Build docker image
         run: |
           cd src
-          docker build -f DockerfileDev -t openedge-pas:${{env.OPENEDGE_VERSION}} .
+          docker build -f DockerfileProd -t openedge-pas:${{env.OPENEDGE_VERSION}} .
       
       - name: Setup test container
         run: |
           cd src
-          #ls -l 
+          cp start-prod-ci.sh 4gl/ 
           docker run \
             -d \
             --name pas \
@@ -75,7 +67,7 @@ jobs:
             -p 8810:8810 \
             --env PASWEBHANDLERS=/app/src/ROOT.handlers \
             openedge-pas:${{env.OPENEDGE_VERSION}} \
-            /app/pas/start.sh
+            /app/src/start-prod-ci.sh
           echo starting PAS...
       
       # Wait for PAS to start

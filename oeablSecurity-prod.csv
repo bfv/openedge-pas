@@ -1,4 +1,3 @@
-# PROD
 "/web/**","*","denyAll()"
 "/**","*","denyAll()"
 
