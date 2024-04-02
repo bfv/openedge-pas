@@ -1,0 +1,5 @@
+# PROD
+"/web/**","*","denyAll()"
+"/**","*","denyAll()"
+
+
