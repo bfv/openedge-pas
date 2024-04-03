@@ -59,7 +59,6 @@ RUN groupadd -g 1000 openedge && \
 ##### create an instance #####
 
 RUN mkdir -p /app/pas && \
-    mkdir /app/src && \
     mkdir /app/lib
 
 # if not present ESAM starts complaining
@@ -68,8 +67,10 @@ RUN touch /usr/dlc/progress.cfg
 WORKDIR /app/pas
 RUN pasman create -p 8810 -P 8811 -j 8812 -s 8812 -Z prod -f -N pas ./as
 
-WORKDIR /app/pas/as    
-RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH=".,/app/src,/app/lib/logic.pl,\${DLC}/tty,\${DLC}/tty/OpenEdge.Core.pl,\${DLC}/tty/netlib/OpenEdge.Net.pl" && \
+WORKDIR /app/pas/as   
+
+# PROPATH must be overriden in the application Dockerfile
+RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH="/dev/null" && \
     touch /app/pas/as.pf && \
     bin/oeprop.sh AppServer.SessMgr.agentStartupParam="-T \"\${catalina.base}/temp\" -pf ./../../as.pf" && \
     bin/oeprop.sh AppServer.SessMgr.pas.agentLogFile="\${catalina.base}/logs/pas.agent.log"
@@ -89,5 +90,4 @@ RUN chown -R openedge:openedge /app/
 
 USER openedge
 
-VOLUME /app/src
 VOLUME /app/lib

@@ -5,6 +5,14 @@ FROM openedge-pas:${OE_VERSION}
 
 WORKDIR /app/pas/as/
 
+# setup src structure
+RUN mkdir /app/src
+VOLUME /app/src
+
+# set the PROPATH
+RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH="/app/src,\${DLC}/tty,\${DLC}/tty/OpenEdge.Core.pl,\${DLC}/tty/netlib/OpenEdge.Net.pl"
+
+# enable the web adapter, set the security file
 RUN bin/oeprop.sh pas.ROOT.WEB.adapterEnabled=1
 COPY oeablSecurity-dev.csv /app/pas/as/webapps/ROOT/WEB-INF/oeablSecurity.csv
 

@@ -8,6 +8,7 @@ on:
       - '.github/workflows/publish-prod.yaml'
       - 'oeablSecurity-prod.csv'
       - 'DockerfileProd'
+      - 'DockerfileProdCI'
       - 'start-prod-ci.sh'
   workflow_dispatch:
 

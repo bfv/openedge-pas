@@ -14,7 +14,7 @@ on:
         default: "latest"
         required: true
               
-run-name: publish PROD openedge-pas ${{ inputs.openedgeversion }} to devbfvio/openedge-pas:${{ github.event.inputs.imagetag }}
+run-name: publish PROD ${{ inputs.openedgeversion }} to docker.io/devbfvio/openedge-pas:${{ github.event.inputs.imagetag }}
 
 jobs:
   publish:
