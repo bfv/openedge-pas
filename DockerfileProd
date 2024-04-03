@@ -59,7 +59,10 @@ RUN groupadd -g 1000 openedge && \
 ##### create an instance #####
 
 RUN mkdir -p /app/pas && \
-    mkdir /app/lib
+    mkdir /app/config && \
+    mkdir /app/lib && \
+    mkdir /app/log && \
+    mkdir /app/scripts 
 
 # if not present ESAM starts complaining
 RUN touch /usr/dlc/progress.cfg
@@ -90,4 +93,7 @@ RUN chown -R openedge:openedge /app/
 
 USER openedge
 
+VOLUME /app/config
 VOLUME /app/lib
+VOLUME /app/log
+VOLUME /app/scripts

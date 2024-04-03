@@ -8,6 +8,14 @@ function startServer() {
         echo "start.sh: $PASWEBHANDLERS not found, using default"
         ls -l /app/src/webhandlers/
     fi
+
+    if [[ -f "/app/scripts/pas-start.sh" ]]; then
+        echo "start.sh: running /app/scripts/pas-start.sh"
+        /app/scripts/pas-start.sh
+    else
+        echo "start.sh: /app/scripts/pas-start.sh not found"
+    fi
+
     /app/pas/as/bin/tcman.sh start -v
     echo "start.sh: PAS instance started..."
     ps -ef
@@ -15,6 +23,14 @@ function startServer() {
 
 function stopServer() {
     echo "start.sh: attempt to bring PAS instance down gracefully"
+
+    if [[ -f "/app/scripts/pas-stop.sh" ]]; then
+        echo "start.sh: running /app/scripts/pas-stop.sh"
+        /app/scripts/pas-stop.sh
+    else
+        echo "start.sh: /app/scripts/pas-stop.sh not found"
+    fi
+    
     /app/pas/as/bin/tcman.sh stop
     echo "start.sh: PAS stopped..."
     exit 0

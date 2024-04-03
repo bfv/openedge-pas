@@ -72,11 +72,16 @@ jobs:
       - name: Setup test container
         run: |
           cd src
+          mkdir testdir
+          chmod 777 testdir
           docker run \
             -d \
             --name pas \
             -v ./4gl:/app/src \
             -v ./progress.cfg:/usr/dlc/progress.cfg \
+            -v ./testdir:/app/log \
+            -v ./ci/pas-start.sh:/app/scripts/pas-start.sh \
+            -v ./ci/pas-stop.sh:/app/scripts/pas-stop.sh \
             -p 8810:8810 \
             --env PASWEBHANDLERS=/app/src/ROOT.handlers \
             openedge-pas-ci:${{env.OPENEDGE_VERSION}} 
@@ -95,6 +100,18 @@ jobs:
           cat result.txt 
           grep -Fxq "OK" result.txt
 
+      - name: Stop test container
+        run: |
+          docker logs pas
+          docker stop pas
+          docker rm pas
+          echo PAS stopped
+
+      - name: check optional start en stop scripts
+        run: |
+          cd src
+          ls -l ./testdir
+          
       - name: Remove installer files
         run: |
           cd src
