@@ -1,7 +1,16 @@
 name: CI Prod
 
 on: 
-  [ push, workflow_dispatch ]
+  push:
+    paths-ignore:
+      - 'README.md'
+      - '.github/workflows/ci-dev.yaml'
+      - '.github/workflows/copytag.yaml'
+      - '.github/workflows/publish-dev.yaml'
+      - 'oeablSecurity-dev.csv'
+      - 'DockerfileDev'
+      - '4gl/**'
+  workflow_dispatch:
 
 permissions:
   contents: read
