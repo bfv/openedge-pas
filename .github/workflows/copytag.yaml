@@ -30,7 +30,7 @@ jobs:
             - name: Display info
               run: |
                 echo "Displaying info"
-                echo "IMAGE_NAME=${{ vars.REGISTRY_DOMAIN }}/${{ vars.IMAGE_PREFIX}}openedge-db"
+                echo "IMAGE_NAME=${{ vars.REGISTRY_DOMAIN }}/${{ vars.IMAGE_PREFIX}}openedge-pas"
                 echo "source_tag=${{ github.event.inputs.source_tag }}"
                 echo "target_tag=${{ github.event.inputs.target_tag }}"
 
