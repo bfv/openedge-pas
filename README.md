@@ -4,5 +4,53 @@ status: W.I.P.
 
 ## WebHandlers
 If the container is started with `--env PASWEBHANDLERS=<full-path-to-webhandlers-files>` then this file will be copied to 
-`/app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/`. This can be used to configure the WebHandlers from source. 
+`/app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers`. This can be used to configure the WebHandlers from source or a deployment. 
 This is to avoid the mess in `openedge.properties` with `webhandler1=...`.
+The `.handlers` file structure is like:
+```
+{
+  "version": "2.0",
+  "serviceName": "",
+  "handlers": [
+    {
+      "uri": "/api",
+      "class": "TestWebHandler",
+      "enabled": true
+    }
+  ]
+}
+```
+
+## PAS dev
+By default the PROPATH is set to `.,/app/src,/app/lib/logic.pl,\${DLC}/tty,\${DLC}/tty/OpenEdge.Core.pl,\${DLC}/tty/netlib/OpenEdge.Net.pl`, which implies you can mount your sources to `/pas/src` of put it in an `logic.pl` in `/app/lib`.
+
+This image can be used like:
+```
+docker run \
+  -d \
+  --name pas-dev \
+  -v ./4gl:/app/src \
+  -v ./progress.cfg:/usr/dlc/progress.cfg \
+  -p 8810:8810 \
+  --env PASWEBHANDLERS=/app/src/ROOT.handlers \
+  openedge-pas:12.8.1 \
+  /app/pas/start.sh
+```
+
+## PAS prod
+For security reason various facilities which are present in de `dev` images are not provided in the `prod` images. 
+
+For the PAS prod instances the default PROPATH is set to `/dev/null` which implies you need to build your own images with this as a base image. (f.e. `FROM devbfvio/openedge-pas:12.8.1`)
+
+There's a `/pas/lib/` directory in which to put you `.pl` file(s). No `/app/src` directory is provided, running sources in production is not a good idea.
+
+No transports are enabled by default. 
+
+The default `oeableSecurity.csv` is set to deny all: 
+```
+"/web/**","*","denyAll()"
+"/**","*","denyAll()"
+```
+
+For suggestions how to create your own image see the `DockerfileProdCI` file for ideas. 
+
