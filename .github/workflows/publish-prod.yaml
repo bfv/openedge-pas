@@ -14,7 +14,7 @@ on:
         default: "latest"
         required: true
               
-run-name: publish PROD openedge-pas ${{ inputs.openedgeversion }} to devbfvio/openedge-pas${{ github.event.inputs.imagetag }}
+run-name: publish PROD openedge-pas ${{ inputs.openedgeversion }} to devbfvio/openedge-pas:${{ github.event.inputs.imagetag }}
 
 jobs:
   publish:
@@ -43,13 +43,13 @@ jobs:
           echo "OPENEDGE_VERSION=${{ inputs.openedgeversion }}" >> $GITHUB_ENV
           echo "IMAGE_NAME=${{ vars.REGISTRY_DOMAIN }}/${{ vars.IMAGE_PREFIX}}openedge-pas:${{ github.event.inputs.imagetag }}" >> $GITHUB_ENV
 
-      - name: Insert JDK version in Dockerfile
+      - name: Insert JDK version in Dockerfile (prod)
         run: |
           jdk=`jq -r ".jdk${FLATVERSION}" src/jdk-versions.json`
           echo JDK: $jdk
-          sed -i "s/JDKVERSION/$jdk/g" src/Dockerfile
-          echo download jdk from Dockerfile:
-          cat src/Dockerfile | grep temurin
+          sed -i "s/JDKVERSION/$jdk/g" src/DockerfileProd
+          echo download jdk from DockerfileProd:
+          cat src/DockerfileProd | grep temurin
       
       - name: Download installer files
         run: |
@@ -65,7 +65,7 @@ jobs:
       - name: Build docker image
         run: |
           cd src
-          docker build -f Dockerfile -t ${{env.IMAGE_NAME}} .
+          docker build -f DockerfileProd -t ${{env.IMAGE_NAME}} .
 
       - name: Remove installer files
         run: |
