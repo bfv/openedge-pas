@@ -16,4 +16,6 @@ RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH="/app/src,\${DLC}/tty,\${DLC}/tty/
 RUN bin/oeprop.sh pas.ROOT.WEB.adapterEnabled=1
 COPY oeablSecurity-dev.csv /app/pas/as/webapps/ROOT/WEB-INF/oeablSecurity.csv
 
+USER openedge
+
 CMD [ "/app/pas/start.sh" ]

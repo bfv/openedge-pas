@@ -111,6 +111,14 @@ jobs:
         run: |
           cd src
           ls -l ./testdir
+          if [[ ! -f "./testdir/pas-started" ]]; then
+            echo "pas-start script not executed"
+            exit 1
+          fi
+          if [[ ! -f "./testdir/pas-stopped" ]]; then  # deliberately wrong filename
+            echo "pas-stop script not executed"
+            exit 1
+          fi
           
       - name: Remove installer files
         run: |
