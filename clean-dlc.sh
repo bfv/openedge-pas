@@ -13,7 +13,7 @@ rm -f  /usr/dlc/newk*
 rm -rf /usr/dlc/odbc
 rm -rf /usr/dlc/oebuild
 rm -rf /usr/dlc/ora
-rm -rf /usr/dlc/perl
+#rm -rf /usr/dlc/perl
 rm -rf /usr/dlc/prohelp
 rm -rf /usr/dlc/prolang/ame
 rm -rf /usr/dlc/prolang/utf
