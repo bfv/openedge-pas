@@ -54,3 +54,14 @@ The default `oeableSecurity.csv` is set to deny all:
 
 For suggestions how to create your own image see the `DockerfileProdCI` file for ideas. 
 
+### start and stop scripts
+The `start.sh` script has two hooks for starting and stopping scripts which can be mounted into the container via `-v`.
+`start.sh` chaeck for the presence of `/app/scripts/pas-start.sh` and `/app/scripts/pas-stop.sh`. If found they are executed, in the container obviously. These scripts can be mouted via `-v <full-path-to-your-script>:/app/scripts/pas-start.sh` (same for stop).
+
+Although this gives the possibility to create scripts which are specific for say test, it is recommended to keer the scripts generic and let the script read anything specific from a config file. If the execution of containers differ only if config files, a test of container is more meaningful between different environments.
+
+### directories / volumes
+/app/config
+/app/lib
+/app/log
+/app/scripts
