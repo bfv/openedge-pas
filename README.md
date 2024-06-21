@@ -22,7 +22,8 @@ The `.handlers` file structure is like:
 ```
 
 ## PAS dev
-By default the PROPATH is set to `.,/app/src,/app/lib/logic.pl,\${DLC}/tty,\${DLC}/tty/OpenEdge.Core.pl,\${DLC}/tty/netlib/OpenEdge.Net.pl`, which implies you can mount your sources to `/pas/src` of put it in an `logic.pl` in `/app/lib`.
+By default the PROPATH is set to `.,/app/src,/app/lib/logic.pl,/app/dep1,/app/dep2,/app/dep3,/app/dep4,/app/dep5,\${DLC}/tty,\${DLC}/tty/OpenEdge.Core.pl,\${DLC}/tty/netlib/OpenEdge.Net.pl`, which implies you can mount your sources to `/pas/src` of put it in an `logic.pl` in `/app/lib`.
+Apart from there's `/app/dep1..5` in the PROPATH, this is for convenience, since this this makes added dependencies easier.
 
 This image can be used like:
 ```
