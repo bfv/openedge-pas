@@ -2,6 +2,7 @@
 
 function startServer() {
     if [[ -f "${PASWEBHANDLERS}" ]]; then
+        echo "start.sh: $PASWEBHANDLERS found, copying to /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/"
         cp ${PASWEBHANDLERS} /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
         cat /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers
     else
@@ -36,11 +37,25 @@ function stopServer() {
     exit 0
 }
 
+function initLicense() {
+    echo "checking for license"
+    if [[ -f /app/license/progress.cfg ]]; then
+        echo "license found in /app/license, copying to /usr/dlc/progress.cfg"
+        cp /app/license/progress.cfg $DLC/progress.cfg
+    fi
+    if [[ ! -f $DLC/progress.cfg ]]; then
+        echo "No license (/usr/dlc/progress.cfg) found, exiting..."
+        exit 1
+    fi  
+    echo "license found, proceeding"
+}
+
 trap "stopServer" SIGINT SIGTERM
 
 logfile=/app/pas/as/logs/pas.agent.log
 touch $logfile
 
+initLicense
 startServer
 
 pidfile=/app/pas/as/temp/catalina-as.pid
