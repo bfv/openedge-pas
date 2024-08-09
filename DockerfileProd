@@ -70,8 +70,7 @@ RUN mkdir -p /app/pas && \
     mkdir /app/scripts 
 
 # if not present ESAM starts complaining
-RUN touch /usr/dlc/progress.cfg && \
-    chown openedge:openedge /usr/dlc/progress.cfg
+RUN touch /usr/dlc/progress.cfg
 
 WORKDIR /app/pas
 RUN pasman create -p 8810 -P 8811 -j 8812 -s 8812 -Z prod -f -N pas ./as
@@ -84,6 +83,8 @@ RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH="/dev/null" && \
     bin/oeprop.sh AppServer.SessMgr.agentStartupParam="-T \"\${catalina.base}/temp\" -pf ./../../as.pf" && \
     bin/oeprop.sh AppServer.SessMgr.pas.agentLogFile="\${catalina.base}/logs/pas.agent.log"
 
+RUN rm /usr/dlc/progress.cfg
+    
 # give the possibility to add webhandlers from source code
 # a ROOT.handlers file van be placed in this directory to configure WebHandlers
 RUN mkdir -p /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
