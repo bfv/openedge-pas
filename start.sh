@@ -5,7 +5,7 @@ function startServer() {
         echo "start.sh: $PASWEBHANDLERS found, copying to /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/"
         cp ${PASWEBHANDLERS} /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
         cat /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers
-    else if [[ -f "/app/src/ROOT.handlers" ]]; then
+    elif [[ -f "/app/src/ROOT.handlers" ]]; then
         echo "start.sh: /app/src/ROOT.handlers found, copying to /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/"
         cp /app/src/ROOT.handlers /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
         cat /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers

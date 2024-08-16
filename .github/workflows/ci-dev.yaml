@@ -87,6 +87,7 @@ jobs:
 
       - name: Execute tests
         run: |
+          docker logs pas
           curl http://localhost:8810/web/api > result.txt
           cat result.txt 
           grep -Fxq "OK" result.txt
