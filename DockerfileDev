@@ -91,6 +91,9 @@ COPY oeablSecurity-dev.csv /app/pas/as/webapps/ROOT/WEB-INF/oeablSecurity.csv
 
 COPY start.sh /app/pas/
 RUN chmod +x /app/pas/start.sh
+
+RUN touch /app/pas/pas.type.dev
+
 RUN chown -R openedge:openedge /app/
 
 USER openedge

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 function startServer() {
+
     if [[ -f "${PASWEBHANDLERS}" ]]; then
         echo "start.sh: $PASWEBHANDLERS found, copying to /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/"
         cp ${PASWEBHANDLERS} /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
@@ -18,6 +19,14 @@ function startServer() {
         /app/scripts/pas-start.sh
     else
         echo "start.sh: /app/scripts/pas-start.sh not found (info)"
+    fi
+
+    # dev only
+    if [[ -f "/app/pas/pas.type.dev" ]]; then
+      if [[ -f "/app/src/as.pf" ]]; then
+        echo "start.sh: /app/src/as.pf found, copying to /app/pas/as.pf (dev only)"
+        cp /app/src/as.pf /app/pas/as.pf
+      fi
     fi
 
     /app/pas/as/bin/tcman.sh start -v
