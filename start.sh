@@ -5,16 +5,19 @@ function startServer() {
         echo "start.sh: $PASWEBHANDLERS found, copying to /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/"
         cp ${PASWEBHANDLERS} /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
         cat /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers
+    else if [[ -f "/app/src/ROOT.handlers" ]]; then
+        echo "start.sh: /app/src/ROOT.handlers found, copying to /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/"
+        cp /app/src/ROOT.handlers /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/
+        cat /app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers
     else
-        echo "start.sh: $PASWEBHANDLERS not found, using default"
-        ls -l /app/src/webhandlers/
+        echo "start.sh: no webhandlers found"
     fi
 
     if [[ -f "/app/scripts/pas-start.sh" ]]; then
         echo "start.sh: running /app/scripts/pas-start.sh"
         /app/scripts/pas-start.sh
     else
-        echo "start.sh: /app/scripts/pas-start.sh not found"
+        echo "start.sh: /app/scripts/pas-start.sh not found (info)"
     fi
 
     /app/pas/as/bin/tcman.sh start -v
