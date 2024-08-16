@@ -69,7 +69,10 @@ RUN mkdir -p /app/pas && \
     mkdir /app/config 
 
 # if not present ESAM starts complaining
-RUN touch /usr/dlc/progress.cfg
+# this file is necessary in order for a Dockerfile which uses the openedge-pas image to 
+# be able to use oeprop.sh to set properties
+RUN touch /usr/dlc/progress.cfg  && \
+    chown openedge:openedge /usr/dlc/progress.cfg
 
 WORKDIR /app/pas
 RUN pasman create -p 8810 -P 8811 -j 8812 -s 8812 -Z dev -f -N pas ./as
@@ -79,8 +82,6 @@ RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH=".,/app/config,/app/src,/app/lib/l
     touch /app/pas/as.pf && \
     bin/oeprop.sh AppServer.SessMgr.agentStartupParam="-T \"\${catalina.base}/temp\" -pf ./../../as.pf" && \
     bin/oeprop.sh AppServer.SessMgr.pas.agentLogFile="\${catalina.base}/logs/pas.agent.log"
-
-RUN rm /usr/dlc/progress.cfg
 
 # give the possibility to add webhandlers from source code
 # a ROOT.handlers file van be placed in this directory to configure WebHandlers

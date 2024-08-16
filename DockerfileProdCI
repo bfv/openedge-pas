@@ -9,17 +9,12 @@ WORKDIR /app/pas/as/
 RUN mkdir /app/src
 VOLUME /app/src
 
-# oeprop.sh won't run without a progress.cfg file
-RUN touch /usr/dlc/progress.cfg
-
 # set the PROPATH
 RUN bin/oeprop.sh AppServer.Agent.pas.PROPATH="/app/src,\${DLC}/tty,\${DLC}/tty/OpenEdge.Core.pl,\${DLC}/tty/netlib/OpenEdge.Net.pl"
 
 # enable the web adapter, set the security file
 RUN bin/oeprop.sh pas.ROOT.WEB.adapterEnabled=1
 COPY oeablSecurity-dev.csv /app/pas/as/webapps/ROOT/WEB-INF/oeablSecurity.csv
-
-RUN rm /usr/dlc/progress.cfg
 
 USER openedge
 
