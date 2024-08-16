@@ -88,10 +88,10 @@ jobs:
           echo starting PAS...
       
       # Wait for PAS to start
-      - name: Wait 10 seconds
+      - name: Wait 20 seconds
         uses: GuillaumeFalourd/wait-sleep-action@175a644657d8de245e4c6059d014941646186a84  # v1
         with:
-          time: '10'
+          time: '20'
 
       - name: Execute tests
         run: |
