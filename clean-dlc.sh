@@ -25,7 +25,7 @@ rm -rf /usr/dlc/ubqmanager
 
 # /usr/dlc/bin
 rm -f /usr/dlc/bin/*sql*
-rm -f /usr/dlc/bin/*sts*
+#rm -f /usr/dlc/bin/*sts*
 rm -f /usr/dlc/bin/_bprowsdldoc
 rm -f /usr/dlc/bin/_mprosrv
 rm -f /usr/dlc/bin/_mproshut
