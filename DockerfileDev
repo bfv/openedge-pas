@@ -12,9 +12,9 @@ ENV TERM xterm
 RUN /install/openedge/proinst -b /install/openedge/response.ini -l /install/install_oe.log -n && \
     cat /install/install_oe.log
 
-COPY clean-dlc.sh /install/openedge/
-RUN chmod +x /install/openedge/clean-dlc.sh
-RUN /install/openedge/clean-dlc.sh
+#COPY clean-dlc.sh /install/openedge/
+#RUN chmod +x /install/openedge/clean-dlc.sh
+#RUN /install/openedge/clean-dlc.sh
 
 RUN rm /usr/dlc/progress.cfg
 
