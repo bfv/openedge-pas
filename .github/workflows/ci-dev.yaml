@@ -79,14 +79,15 @@ jobs:
             /app/pas/start.sh
           echo starting PAS...
       
-      # Wait for PAS to start
-      - name: Wait 10 seconds
+      # Wait for PAS to start, shorter times give issues with PAS not being ready
+      - name: Wait 20 seconds
         uses: GuillaumeFalourd/wait-sleep-action@175a644657d8de245e4c6059d014941646186a84  # v1
         with:
-          time: '10'
+          time: '20'
 
       - name: Execute tests
         run: |
+          docker logs pas
           curl http://localhost:8810/web/api > result.txt
           cat result.txt 
           grep -Fxq "OK" result.txt

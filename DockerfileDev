@@ -56,6 +56,11 @@ ENV PATH=$DLC:$DLC/bin:$PATH:${JAVA_HOME}/bin:${PATH}
 RUN groupadd -g 1000 openedge && \
     useradd -r -u 1000 -g openedge openedge
 
+# allow for progress to be copied into $DLC
+# kubernetes does not support volume mount of single files
+RUN chown root:openedge $DLC
+RUN chmod 775 $DLC
+
 ##### create an instance #####
 
 RUN mkdir -p /app/pas && \
@@ -64,7 +69,10 @@ RUN mkdir -p /app/pas && \
     mkdir /app/config 
 
 # if not present ESAM starts complaining
-RUN touch /usr/dlc/progress.cfg
+# this file is necessary in order for a Dockerfile which uses the openedge-pas image to 
+# be able to use oeprop.sh to set properties
+RUN touch /usr/dlc/progress.cfg  && \
+    chown openedge:openedge /usr/dlc/progress.cfg
 
 WORKDIR /app/pas
 RUN pasman create -p 8810 -P 8811 -j 8812 -s 8812 -Z dev -f -N pas ./as
@@ -83,6 +91,9 @@ COPY oeablSecurity-dev.csv /app/pas/as/webapps/ROOT/WEB-INF/oeablSecurity.csv
 
 COPY start.sh /app/pas/
 RUN chmod +x /app/pas/start.sh
+
+RUN touch /app/pas/pas.type.dev
+
 RUN chown -R openedge:openedge /app/
 
 USER openedge

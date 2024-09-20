@@ -4,7 +4,7 @@ status: W.I.P.
 
 ## WebHandlers
 If the container is started with `--env PASWEBHANDLERS=<full-path-to-webhandlers-files>` then this file will be copied to 
-`/app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers`. This can be used to configure the WebHandlers from source or a deployment. 
+`/app/pas/as/webapps/ROOT/WEB-INF/adapters/web/ROOT/ROOT.handlers`. Note that `<full-path-to-webhandlers-files>` should be IN the container. This can be used to configure the WebHandlers from source or a deployment. 
 This is to avoid the mess in `openedge.properties` with `webhandler1=...`.
 The `.handlers` file structure is like:
 ```
@@ -19,6 +19,8 @@ The `.handlers` file structure is like:
     }
   ]
 }
+
+If `$PASWEBHANDLERS` is not specified or the file it points to doesn't exist, the existence of /app/src/ROOT.handlers is checked. If found this file is used. 
 ```
 
 ## PAS dev
