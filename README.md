@@ -39,6 +39,8 @@ docker run \
   openedge-pas:12.8.1 \
   /app/pas/start.sh
 ```
+### startup
+Via the `agentStartupParam` setting in `openedge.properties` the `/app/pas/as.pf` is referenced. By default this file is empty, it's there to be overridden.
 
 ## PAS prod
 For security reason various facilities which are present in de `dev` images are not provided in the `prod` images. 
