@@ -1,0 +1,16 @@
+FROM OPENEDGE_ONLY_IMAGE_NAME
+
+USER root
+
+RUN apt update \
+  && apt install -y dotnet-runtime-10.0 \
+  && apt clean \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN \
+  sed -i "s/net6\.0/net10\.0/g" /usr/dlc/bin/Progress.clrbridge.netcore.runtimeconfig.json && \
+  sed -i "s/6\.0\.0/10\.0\.0/g" /usr/dlc/bin/Progress.clrbridge.netcore.runtimeconfig.json && \
+  echo "-clrnetcore" >> /usr/dlc/startup.pf
+
+USER openedge
+

@@ -66,11 +66,26 @@ jobs:
           echo "${{ secrets[format('PROGRESS_CFG_{0}', env.FLATVERSION)] }}" | base64 --decode > src/progress.cfg
           ls -l src
 
+      - name: Prepare Dockerfile-dotnet
+        run: |
+          oeimage="${{env.IMAGE_NAME}}"
+          dotnetimage="${{env.IMAGE_NAME}}"
+          dotnetimage="${dotnetimage%-dev}-dotnet10-dev"
+          echo "DOTNET_IMAGE_NAME=$dotnetimage" >> $GITHUB_ENV
+          echo OpenEdge version for dotnet image: ${{env.OPENEDGE_VERSION}}
+          sed -i "s|OPENEDGE_ONLY_IMAGE_NAME|$oeimage|g" src/DockerfileDev-dotnet
+          cat src/DockerfileDev-dotnet
+
       - name: Build docker image
         run: |
           cd src
           docker build -f DockerfileDev -t ${{env.IMAGE_NAME}} .
 
+      - name: Build dotnet docker image
+        run: |
+          cd src
+          docker build -f DockerfileDev-dotnet -t ${{env.DOTNET_IMAGE_NAME}}  .
+  
       - name: Remove installer files
         run: |
           cd src
@@ -88,3 +103,7 @@ jobs:
       - name: Push image to registry
         run: |
           docker push ${{env.IMAGE_NAME}}
+
+      - name: Push dotnet image to registry
+        run: |
+          docker push ${{env.DOTNET_IMAGE_NAME}}
