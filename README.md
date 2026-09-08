@@ -1,6 +1,8 @@
 # `openedge-pas`
 
-status: W.I.P.
+[![CI Dev](https://github.com/bfv/openedge-pas/actions/workflows/ci-dev.yaml/badge.svg)](https://github.com/bfv/openedge-pas/actions/workflows/ci-dev.yaml)
+<br/>
+[![CI Prod](https://github.com/bfv/openedge-pas/actions/workflows/ci-prod.yaml/badge.svg)](https://github.com/bfv/openedge-pas/actions/workflows/ci-prod.yaml)
 
 ## WebHandlers
 If the container is started with `--env PASWEBHANDLERS=<full-path-to-webhandlers-files>` then this file will be copied to 
